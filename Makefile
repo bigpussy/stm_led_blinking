@@ -1,8 +1,8 @@
 # path to STM32F103 standard peripheral library
-STD_PERIPH_LIBS ?= ./STM32F10x_StdPeriph_Lib_V3.5.0/
+STD_PERIPH_LIBS ?= /home/pudge/STM32F10x_StdPeriph_Lib_V3.5.0
 
 # list of source files
-SOURCES  = main.c
+SOURCES  = main.c main.h
 SOURCES += $(STD_PERIPH_LIBS)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c
 SOURCES += $(STD_PERIPH_LIBS)/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c
 SOURCES += $(STD_PERIPH_LIBS)/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c
@@ -21,8 +21,8 @@ ST_FLASH ?= st-flash
 # specify compiler flags
 CFLAGS  = -g -O2 -Wall
 CFLAGS += -T$(STD_PERIPH_LIBS)/Project/STM32F10x_StdPeriph_Template/TrueSTUDIO/STM3210B-EVAL/stm32_flash.ld
-CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m3 -mthumb-interwork
+CFLAGS += -mfloat-abi=soft -mfpu=fpv4-sp-d16
 CFLAGS += -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER
 CFLAGS += -Wl,--gc-sections
 CFLAGS += -I.
@@ -45,5 +45,5 @@ clean:
 	rm -f *.o *.elf *.hex *.bin
 
 # flash
-burn:
+burn: all
 	sudo $(ST_FLASH) write $(PROJECT).bin 0x8000000
